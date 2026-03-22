@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>foo</title>
+  </head>
+  <ol>
+    <li>bar</li>
+    <li>baz</li>
+    <li>boom</li>
+    <li>asdfgasdf</li>
+  </ol>
+</html>

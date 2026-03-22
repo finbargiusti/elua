@@ -1,0 +1,12 @@
+Test 1
+
+{%= "hi" %}
+
+{% for i = 1,5 do %}
+  {% for j = 1,2 do %} 
+item:
+=> {%=i%} {%=j%}
+  {% end %}
+{% end %}
+
+Done.
