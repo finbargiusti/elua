@@ -48,3 +48,19 @@ test('render HTML with params', function()
   render_file('test/file.elua.html', 'test/file.html')
   return os.execute('cmp -s test/file.html test/file.html.expected') == 0
 end)
+
+test('README example', function()
+  return render [[
+<ol>
+{% for i = 1,3 do %}
+  <li>Item {%= i %}</li>
+{% end %}
+</ol>
+]] == [[
+<ol>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ol>
+]]
+end)

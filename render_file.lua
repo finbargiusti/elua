@@ -1,5 +1,7 @@
 local render = require('render')
 
+---@param from string
+---@param to string
 local function render_file(from, to)
   local file, err = io.open(from, 'r')
   if not file then
