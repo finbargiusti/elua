@@ -1,6 +1,4 @@
-local render = require('render')
-local render_file = require('render_file')
-local compile = require('compile')
+local M = require('elua')
 
 local function test(name, fn)
   if fn() then
@@ -11,7 +9,7 @@ local function test(name, fn)
 end
 
 test('basic render', function()
-  return render [[
+  return M.render [[
 Numbers 1 to 3:
 {% for i = 1, 3 do %}
 Number: {%=i%}!
@@ -25,7 +23,7 @@ Number: 3!
 end)
 
 test('utf-8', function()
-  return render [[
+  return M.render [[
 Some things:
 {% if true then %}
 Number: {%= 2 + 3 %}!
@@ -39,19 +37,19 @@ Number: 5!
 end)
 
 test('render_file', function()
-  render_file('test/file.txt.elua', 'test/file.txt')
+  M.render_file('test/file.txt.elua', 'test/file.txt')
   return os.execute('cmp -s test/file.txt test/file.txt.expected') == 0
 end)
 
 test('render HTML with global vars', function()
   Title = "foo"
   Items = { "bar", "baz", "boom", "asdfgasdf" }
-  render_file('test/file.elua.html', 'test/file.html')
+  M.render_file('test/file.elua.html', 'test/file.html')
   return os.execute('cmp -s test/file.html test/file.html.expected') == 0
 end)
 
 test('README example', function()
-  return render [[
+  return M.render [[
 <ol>
 {% for i = 1,3 do %}
   <li>Item {%= i %}</li>
@@ -67,7 +65,7 @@ test('README example', function()
 end)
 
 test('render with env variables', function()
-  return render([[
+  return M.render([[
 name: {%= name %}
 description: {%= description %}]], {
     name = "test",
@@ -78,7 +76,7 @@ description: this is a test]]
 end)
 
 test('compile and render with env variables', function()
-  local c = compile([[
+  local c = M.compile([[
 name: {%= name %}
 description: {%= description %}]])
 
