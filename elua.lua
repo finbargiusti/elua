@@ -103,14 +103,15 @@ end
 
 ---@param from string
 ---@param to string
-function M.render_file(from, to)
+---@param env table?
+function M.render_file(from, to, env)
   local file, err = io.open(from, 'r')
   if not file then
     error(err)
   end
   local input = file:read('*all')
   file:close()
-  local output = M.render(input)
+  local output = M.render(input, env)
   file, err = io.open(to, 'w')
   if not file then
     error(err)
