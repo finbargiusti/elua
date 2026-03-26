@@ -84,3 +84,17 @@ description: {%= description %}]])
 name: test
 description: desc]]
 end)
+
+test('nested rendering', function()
+  local n = M.compile('{%= "hi" %}')
+
+  local m = M.compile([[
+render: {%= n() %}
+done.
+]])
+
+  return m({n = n}) == [[
+render: hi
+done.
+]]
+end)

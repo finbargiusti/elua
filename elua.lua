@@ -12,7 +12,15 @@ local function invert(input)
     local s, e, t = output:find('{%%(=?).-%%}', i)
     if not s then
       if i <= #output then
-        res[#res + 1] = string.format("_write([[%s]])", output:sub(i))
+        local suffix = output:sub(i)
+        if prev_t ~= '=' then
+          suffix = suffix:gsub('^%s-\n', '')
+          if suffix:match('^%s+$') then
+            -- let's avoid printing whitespaces following a non-printer.
+            break
+          end
+        end
+        res[#res + 1] = string.format("_write('%s')", suffix:gsub('\n', '\\n'):gsub("'", "\'"))
       end
       break
     end
@@ -25,7 +33,7 @@ local function invert(input)
       if t ~= '=' then
         k = k:gsub('[^%S\n]-$', '')
       end
-      res[#res + 1] = string.format("_write([[\n%s]])", k)
+      res[#res + 1] = string.format("_write('%s')", k:gsub('\n', '\\n'):gsub("'", "\'"))
     end
 
     res[#res + 1] = output:sub(s, e)
@@ -57,13 +65,15 @@ function M.compile(input)
     local _write = function(x)
       res[#res + 1] = tostring(x)
     end
-    local fenv = getfenv()
+    local fenv = {
+      _write = _write
+    }
+    setmetatable(fenv, { __index = _G })
     if env then
       for k, v in pairs(env) do
         fenv[k] = v
       end
     end
-    fenv['_write'] = _write
     setfenv(f, fenv)
     f()
     return table.concat(res)
