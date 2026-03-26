@@ -98,3 +98,14 @@ render: hi
 done.
 ]]
 end)
+
+test('escaped characters', function()
+  -- escaped characters stresstest
+  local r = M.render([===[
+[[ ' " \n asdf {%= "'" %} {%= '"' %} ]] [123]
+]===])
+
+  return r == [===[
+[[ ' " \n asdf ' " ]] [123]
+]===]
+end)

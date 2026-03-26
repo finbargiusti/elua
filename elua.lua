@@ -1,5 +1,18 @@
 local M = {}
 
+local escapes = {
+  ['\n'] = '\\n',
+  ["'"] = "\\'",
+  ["\\n"] = "\\\n"
+}
+
+local function escape(s)
+  for k, v in pairs(escapes) do
+    s = s:gsub(k, v)
+  end
+  return s
+end
+
 ---@param input string
 local function invert(input)
   local output = input
@@ -20,7 +33,7 @@ local function invert(input)
             break
           end
         end
-        res[#res + 1] = string.format("_write('%s')", suffix:gsub('\n', '\\n'):gsub("'", "\'"))
+        res[#res + 1] = string.format("_write('%s')", escape(suffix))
       end
       break
     end
@@ -33,7 +46,7 @@ local function invert(input)
       if t ~= '=' then
         k = k:gsub('[^%S\n]-$', '')
       end
-      res[#res + 1] = string.format("_write('%s')", k:gsub('\n', '\\n'):gsub("'", "\'"))
+      res[#res + 1] = string.format("_write('%s')", escape(k))
     end
 
     res[#res + 1] = output:sub(s, e)
