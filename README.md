@@ -16,4 +16,4 @@ Usage:
 
 `{%= %}` will be printed.
 
-Any other text between at least one print-style block will also be printed.
+Anything between blocks will be printed, with the exception of whitespace between non-printing blocks.

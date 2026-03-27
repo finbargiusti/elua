@@ -38,8 +38,8 @@ local function invert(input)
       break
     end
 
-    if i < s and (prev_t == 'a' or (t == '=' or prev_t == '=')) then
-      local k = output:sub(i, s - 1)
+    local k = output:sub(i, s - 1)
+    if i < s and (prev_t == 'a' or (t == '=' or prev_t == '=') or not k:match('^%s+$')) then
       if prev_t ~= '=' then
         k = k:gsub('^%s-\n', '')
       end
@@ -104,7 +104,7 @@ end
 ---@param from string
 ---@param to string
 ---@param env table?
-function M.render_file(from, to, env)
+function M.render_file(from, env, to)
   local file, err = io.open(from, 'r')
   if not file then
     error(err)
