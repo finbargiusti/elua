@@ -37,14 +37,14 @@ Number: 5!
 end)
 
 test('render_file', function()
-  M.render_file('test/file.txt.elua', 'test/file.txt')
+  M.render_file('test/file.txt.elua', {}, 'test/file.txt')
   return os.execute('cmp -s test/file.txt test/file.txt.expected') == 0
 end)
 
 test('render HTML with global vars', function()
   Title = "foo"
   Items = { "bar", "baz", "boom", "asdfgasdf" }
-  M.render_file('test/file.elua.html', 'test/file.html')
+  M.render_file('test/file.elua.html', {}, 'test/file.html')
   return os.execute('cmp -s test/file.html test/file.html.expected') == 0
 end)
 
